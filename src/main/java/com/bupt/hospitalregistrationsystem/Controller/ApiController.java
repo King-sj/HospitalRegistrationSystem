@@ -1,4 +1,4 @@
-package com.bupt.hospitalregistrationsystem.Controler;
+package com.bupt.hospitalregistrationsystem.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,10 +8,11 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/user")
-public class ApiControler {
+public class ApiController {
 
   @GetMapping("/test")
-  public Mono<String> test(){
+  public Mono<String> test()
+  {
     return Mono.just("test suc");
   }
 }
