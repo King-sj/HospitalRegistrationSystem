@@ -1,6 +1,7 @@
 package HospitalRegistrationSystem.src.Hospital;
 import java.util.HashMap;
 import java.util.Map;
+import java.time.LocalDate;
 
 public class UserManage {
     // 模拟数据库存储用户信息，真正的应用中应该是从数据库中查询，届时修改此部分代码
@@ -9,7 +10,7 @@ public class UserManage {
     private static Map<String, Patient> patients = new HashMap<>();
     private static Map<String, String> modifyNews = new HashMap<>();
     private static Map<String, String> delednames = new HashMap<>();
-    private static Map<String, Map<String, Integer>> attendances = new HashMap<>();
+    private static Map<String, Map<LocalDate, Integer>> attendances = new HashMap<>();
 
     public void approveRegistration(User user, boolean isApproved) {
         if (user instanceof Doctor) {
@@ -138,20 +139,27 @@ public class UserManage {
     }
 
     //审核出诊信息
-    public static void auditAppointment(Doctor doctor, boolean isApproved){
+    public void auditAppointment(Doctor doctor, boolean isApproved){
         if(isApproved){
-            attendances.put(doctor.getName(), doctor.getAppointments());
+            attendances.put(doctor.getDepartment() +": "+ doctor.getName(), doctor.getAppointments());
             doctor.setisApproved();
         }else{
             System.out.println("The review is not passed");
         }
     }
 
-    public static void main(String[] args){
-        // 添加初始管理员
-        Admin initialAdmin = new Admin("admin", "admin", "admin", "admin");
-
-        // 第一次登录修改密码
-        initialAdmin.setToken("HospitalAdmin");
+    public static Map<String, Map<LocalDate, Integer>> publishAppointment(){
+        return attendances;
     }
+
+    public void printAppointment(){
+        attendances.forEach((name, innerMap) -> {
+            System.out.println("Name: " + name);
+            System.out.println("Attendance:");
+            innerMap.forEach((date, attendance) -> {
+                System.out.println(date + ": " + attendance);
+            });
+        });
+    }
+
 }

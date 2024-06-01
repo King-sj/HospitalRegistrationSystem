@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.time.LocalDate;
 
 public class Doctor extends User{
     final String USER_TYPE = "Doctor";
@@ -15,7 +16,7 @@ public class Doctor extends User{
     private String title;
     private String specialty;
 
-    private static Map<String, Integer> appointments = new HashMap<>();
+    private static Map<LocalDate, Integer> appointments = new HashMap<>();
     private static boolean isApproved = false;
 
     public Doctor(String id, String name, String address, String contact) {
@@ -78,12 +79,12 @@ public class Doctor extends User{
         this.specialty = specialty;
     }
 
-    public void setAppointment(String date, int appointCount){
+    public void setAppointment(LocalDate date, int appointCount){
         appointments.put(date, appointCount);
         setisNotApproved(); // 等待管理员审核
     }
 
-    public Map<String, Integer> getAppointments() {
+    public Map<LocalDate, Integer> getAppointments() {
         return appointments;
     }
 
@@ -96,13 +97,13 @@ public class Doctor extends User{
     }
 
     // 查看出诊信息（start起始时间，end束时间）
-    public void getPeriodAppointments(String start, String end){
+    public void getPeriodAppointments(LocalDate start, LocalDate end){
         if(isApproved){
-            Set<String> set=appointments.keySet();
+            Set<LocalDate> set=appointments.keySet();
             Object[] arr=set.toArray();
             Arrays.sort(arr);
             for(Object key:arr){
-                String appointTime = (String) key;
+                LocalDate appointTime = (LocalDate)key;
                 if(appointTime.compareTo(start) >= 0 && appointTime.compareTo(end) <= 0){
                     System.out.println(key+": "+ appointments.get(key));
                 }
@@ -112,7 +113,7 @@ public class Doctor extends User{
         }
     }
 
-    public void getAppointments(String date){
+    public void getAppointments(LocalDate date){
         if(isApproved){
             System.out.println(date+": "+ appointments.get(date));
         }else{
@@ -120,4 +121,3 @@ public class Doctor extends User{
         }    
     }
 }
-
