@@ -1,5 +1,10 @@
 package HospitalRegistrationSystem.src.Hospital;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.Arrays;
+import java.util.HashMap;
+
 public class Doctor extends User{
     final String USER_TYPE = "Doctor";
     private String token;
@@ -9,6 +14,9 @@ public class Doctor extends User{
     private String department;
     private String title;
     private String specialty;
+
+    private static Map<String, Integer> appointments = new HashMap<>();
+    private static boolean isApproved = false;
 
     public Doctor(String id, String name, String address, String contact) {
         super(id, name, address, contact);
@@ -69,4 +77,47 @@ public class Doctor extends User{
     public void setSpecialty(String specialty) {
         this.specialty = specialty;
     }
+
+    public void setAppointment(String date, int appointCount){
+        appointments.put(date, appointCount);
+        setisNotApproved(); // 等待管理员审核
+    }
+
+    public Map<String, Integer> getAppointments() {
+        return appointments;
+    }
+
+    public void setisApproved(){
+        isApproved = true; // 管理员调用，设置审核通过
+    }
+
+    public static void setisNotApproved(){
+        isApproved = false;
+    }
+
+    // 查看出诊信息（start起始时间，end束时间）
+    public void getPeriodAppointments(String start, String end){
+        if(isApproved){
+            Set<String> set=appointments.keySet();
+            Object[] arr=set.toArray();
+            Arrays.sort(arr);
+            for(Object key:arr){
+                String appointTime = (String) key;
+                if(appointTime.compareTo(start) >= 0 && appointTime.compareTo(end) <= 0){
+                    System.out.println(key+": "+ appointments.get(key));
+                }
+            }
+        }else{
+            System.out.println("The review is still not passed, and the house call information cannot be viewed");
+        }
+    }
+
+    public void getAppointments(String date){
+        if(isApproved){
+            System.out.println(date+": "+ appointments.get(date));
+        }else{
+            System.out.println("The review is still not passed, and the house call information cannot be viewed");
+        }    
+    }
 }
+

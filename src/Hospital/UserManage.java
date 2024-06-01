@@ -9,6 +9,7 @@ public class UserManage {
     private static Map<String, Patient> patients = new HashMap<>();
     private static Map<String, String> modifyNews = new HashMap<>();
     private static Map<String, String> delednames = new HashMap<>();
+    private static Map<String, Map<String, Integer>> attendances = new HashMap<>();
 
     public void approveRegistration(User user, boolean isApproved) {
         if (user instanceof Doctor) {
@@ -134,6 +135,16 @@ public class UserManage {
     public static void removeAdmin(String name) {
         delednames.put(name, admins.get(name).USER_TYPE);
         admins.remove(name);
+    }
+
+    //审核出诊信息
+    public static void auditAppointment(Doctor doctor, boolean isApproved){
+        if(isApproved){
+            attendances.put(doctor.getName(), doctor.getAppointments());
+            doctor.setisApproved();
+        }else{
+            System.out.println("The review is not passed");
+        }
     }
 
     public static void main(String[] args){
