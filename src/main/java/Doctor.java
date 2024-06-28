@@ -1,5 +1,3 @@
-package HospitalRegistrationSystem.src.Hospital;
-
 import java.util.Map;
 import java.util.Set;
 import java.util.Arrays;

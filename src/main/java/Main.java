@@ -1,5 +1,3 @@
-package HospitalRegistrationSystem.src.Hospital;
-
 import java.time.LocalDate;
 
 public class Main {

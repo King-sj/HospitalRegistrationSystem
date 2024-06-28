@@ -1,5 +1,3 @@
-package HospitalRegistrationSystem.src.Hospital;
-
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Scanner;

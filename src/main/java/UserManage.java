@@ -1,16 +1,15 @@
-package HospitalRegistrationSystem.src.Hospital;
 import java.util.HashMap;
 import java.util.Map;
 import java.time.LocalDate;
 
 public class UserManage {
     // 模拟数据库存储用户信息，真正的应用中应该是从数据库中查询，届时修改此部分代码
-    private static Map<String, Admin> admins = new HashMap<>();
-    private static Map<String, Doctor> doctors = new HashMap<>();
-    private static Map<String, Patient> patients = new HashMap<>();
-    private static Map<String, String> modifyNews = new HashMap<>();
-    private static Map<String, String> delednames = new HashMap<>();
-    private static Map<String, Map<LocalDate, Integer>> attendances = new HashMap<>();
+    private static final Map<String, Admin> admins = new HashMap<>();
+    private static final Map<String, Doctor> doctors = new HashMap<>();
+    private static final Map<String, Patient> patients = new HashMap<>();
+    private static final Map<String, String> modifyNews = new HashMap<>();
+    private static final Map<String, String> delednames = new HashMap<>();
+    private static final Map<String, Map<LocalDate, Integer>> attendances = new HashMap<>();
 
     public void approveRegistration(User user, boolean isApproved) {
         if (user instanceof Doctor) {

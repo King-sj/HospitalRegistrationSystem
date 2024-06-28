@@ -1,5 +1,3 @@
-package HospitalRegistrationSystem.src.Hospital;
-
 public class Admin extends User{
     final String USER_TYPE = "Admin";
     private String token = "admin";
