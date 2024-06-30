@@ -10,7 +10,9 @@ import reactor.core.publisher.Mono;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.bupt.hospitalregistrationsystem.Component.EmailService;
 
+import java.security.SecureRandom;
 import java.util.Random;
+
 
 @RestController
 @RequestMapping("loginSystem")
@@ -20,6 +22,8 @@ public class LoginApiController {
   private final RedisManger redisManager;
   private final MongoUserService mongoUserService;
   private final Logger log;
+  private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
   @Autowired
   public LoginApiController(EmailService emailService, RedisManger redisManger, MongoUserService mongoUserService) {
     this.emailService = emailService;
@@ -62,7 +66,7 @@ public class LoginApiController {
                           if(exs) {
                             return Mono.just(new ApiResult(false, "User already exists"));
                           } else{
-                            return mongoUserService.save(new User("1", account.email(), account.password()))
+                            return mongoUserService.save(new User(account.email(), account.email(), account.password()))
                                     .thenReturn(new ApiResult(true, "suc"));
                           }
                         });
@@ -72,17 +76,41 @@ public class LoginApiController {
               }
             });
   }
+
+  /**
+   *
+   * @param account
+   * @return
+   * @warn 未删除之前的token
+   */
   @PostMapping("login")
   public Mono<ApiResult> login(@RequestBody Account account) {
     log.info("receive login req : {}" , account.email());
     return mongoUserService.findByUsername(account.email())
             .singleOrEmpty()
-            .flatMap(user -> {
-              if (user.getPassword().equals(account.password())) {
-                return Mono.just(new ApiResult(true, "success"));
-              } else {
-                return Mono.just(new ApiResult(false, "wrong password"));
+            .flatMap(user -> user.getPassword().equals(account.password())
+                    ? generateToken(32)
+                      .flatMap(token -> redisManager.addUserToken(account.email(), token)
+                      .thenReturn(new ApiResult(true, "success")))
+                    : Mono.just(new ApiResult(false, "wrong password")
+            )
+    );
+  }
+  public Mono<String> generateToken(int length) {
+    SecureRandom random = new SecureRandom();
+    StringBuilder token = new StringBuilder(length);
+
+    for (int i = 0; i < length; i++) {
+      int randomIndex = random.nextInt(CHARACTERS.length());
+      char randomChar = CHARACTERS.charAt(randomIndex);
+      token.append(randomChar);
+    }
+    return redisManager.exists(token.toString())
+            .flatMap(exs->{
+              if(exs) {
+                return generateToken(length);
               }
+              return Mono.just(token.toString()) ;
             });
   }
 }
