@@ -7,7 +7,7 @@
 + controller layer: 处理用户的请求(http),并转发到服务层， 暂时使用**SpringBoot Web**
 + service layer: 负责业务逻辑处理， 链接controller和 DAO layer
 + DAO layer: 负责与数据库交互
-+ DataBase layer: 采用MySql(备选MongoDB), Redis
++ DataBase layer: 采用MongoDB, Redis
 ****
 ## front-end layer
 ### store-layer
