@@ -9,10 +9,9 @@ export const useLoginServer = defineStore("loginSystemApiServer",()=>{
     headers: { 'X-Custom-Header': 'foobar' }
   })
   async function sendCaptcha(email:string) {
-    const res = await axiosInst.post('captcha',{
+    axiosInst.post('captcha',{
       email:email
     })
-    console.log(res)
   }
   async function signUp(user:User,captcha:String) {
     const res = await axiosInst.post("signup",{

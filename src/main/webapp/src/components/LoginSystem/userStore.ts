@@ -35,10 +35,10 @@ export const useUserStore = defineStore("user",()=>{
       const res = await api.signUp(user,captcha)
       console.log(res)
       // TODO(SJ) do more
-      if(!res.data.res[0]) {
-        ElMessageBox.alert(res.data.res[1])
+      if(!res.data.status) {
+        ElMessageBox.alert(res.data.Msg)
       }
-      return res.data.res[0]
+      return res.data.status
     } catch(err) {
       ElMessageBox.alert("SignUp error:\n" + err);
       return false
