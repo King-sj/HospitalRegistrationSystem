@@ -72,4 +72,17 @@ public class LoginApiController {
               }
             });
   }
+  @PostMapping("login")
+  public Mono<ApiResult> login(@RequestBody Account account) {
+    log.info("receive login req : {}" , account.email());
+    return mongoManager.findByUsername(account.email())
+            .singleOrEmpty()
+            .flatMap(user -> {
+              if (user.getPassword().equals(account.password())) {
+                return Mono.just(new ApiResult(true, "success"));
+              } else {
+                return Mono.just(new ApiResult(false, "wrong password"));
+              }
+            });
+  }
 }

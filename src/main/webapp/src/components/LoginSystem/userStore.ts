@@ -52,8 +52,8 @@ export const useUserStore = defineStore("user",()=>{
       ElMessageBox.alert("login failed:\n"+err)
       return false;
     }
-    if (!res.data.login) {
-      ElMessageBox.alert(res.data.err)
+    if (!res.data.status) {
+      ElMessageBox.alert(res.data.Msg)
       return false
     }
     userStorage.value = new User(user.email,user.password,res.data.token,new Date().getTime() + ttl);
