@@ -1,7 +1,7 @@
 package com.bupt.hospitalregistrationsystem.Component.LoginSystem;
 
 import com.bupt.hospitalregistrationsystem.Model.User;
-import com.bupt.hospitalregistrationsystem.Service.MongoManager;
+import com.bupt.hospitalregistrationsystem.Service.MongoUserService;
 import com.bupt.hospitalregistrationsystem.Service.RedisManger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -18,13 +18,13 @@ public class LoginApiController {
 
   private final EmailService emailService;
   private final RedisManger redisManager;
-  private final MongoManager mongoManager;
+  private final MongoUserService mongoUserService;
   private final Logger log;
   @Autowired
-  public LoginApiController(EmailService emailService, RedisManger redisManger, MongoManager mongoManager) {
+  public LoginApiController(EmailService emailService, RedisManger redisManger, MongoUserService mongoUserService) {
     this.emailService = emailService;
     this.redisManager = redisManger;
-    this.mongoManager = mongoManager;
+    this.mongoUserService = mongoUserService;
     this.log = LoggerFactory.getLogger(LoginApiController.class);
   }
 
@@ -57,12 +57,12 @@ public class LoginApiController {
     return redisManager.getValue(account.email()+"-captcha")
             .flatMap(v->{
               if (v.equals(account.captcha())) {
-                return mongoManager.existsByUsername(account.email())
+                return mongoUserService.existsByUsername(account.email())
                         .flatMap(exs->{
                           if(exs) {
                             return Mono.just(new ApiResult(false, "User already exists"));
                           } else{
-                            return mongoManager.save(new User("1", account.email(), account.password()))
+                            return mongoUserService.save(new User("1", account.email(), account.password()))
                                     .thenReturn(new ApiResult(true, "suc"));
                           }
                         });
@@ -75,7 +75,7 @@ public class LoginApiController {
   @PostMapping("login")
   public Mono<ApiResult> login(@RequestBody Account account) {
     log.info("receive login req : {}" , account.email());
-    return mongoManager.findByUsername(account.email())
+    return mongoUserService.findByUsername(account.email())
             .singleOrEmpty()
             .flatMap(user -> {
               if (user.getPassword().equals(account.password())) {

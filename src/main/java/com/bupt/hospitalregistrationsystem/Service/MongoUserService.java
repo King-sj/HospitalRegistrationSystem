@@ -8,10 +8,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class MongoManager {
+public class MongoUserService {
   private final UserRepository userRepository;
   @Autowired
-  public MongoManager(UserRepository userRepository) {
+  public MongoUserService(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
   public Mono<User> save(User user) {
