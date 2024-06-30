@@ -28,5 +28,11 @@ export const useLoginServer = defineStore("loginSystemApiServer",()=>{
     })
     return res
   }
-  return {sendCaptcha, signUp, login}
+  async function getUserInfo(token:string) {
+    const res = await axiosInst.post("getUser",{
+      token:token
+    })
+    return res
+  }
+  return {sendCaptcha, signUp, login, getUserInfo}
 })

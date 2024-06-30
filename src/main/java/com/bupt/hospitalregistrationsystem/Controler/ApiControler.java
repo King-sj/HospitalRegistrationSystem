@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api")
 public class ApiControler {
   private final RedisManger redisManager;
   private final MongoUserService mongoUserService;
@@ -31,4 +31,5 @@ public class ApiControler {
     admin.setPhone("18146295489");
     return mongoUserService.save(admin);
   }
+
 }

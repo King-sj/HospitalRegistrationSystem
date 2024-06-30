@@ -5,6 +5,7 @@ import com.bupt.hospitalregistrationsystem.Service.MongoUserService;
 import com.bupt.hospitalregistrationsystem.Service.RedisManger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,15 +65,15 @@ public class LoginApiController {
                 return mongoUserService.existsByUsername(account.email())
                         .flatMap(exs->{
                           if(exs) {
-                            return Mono.just(new ApiResult(false, "User already exists"));
+                            return Mono.just(new ApiResult(false, "User already exists",""));
                           } else{
                             return mongoUserService.save(new User(account.email(), account.email(), account.password()))
-                                    .thenReturn(new ApiResult(true, "suc"));
+                                    .thenReturn(new ApiResult(true, "suc",""));
                           }
                         });
 
               } else {
-                return Mono.just(new ApiResult(false, "captcha error"));
+                return Mono.just(new ApiResult(false, "captcha error",""));
               }
             });
   }
@@ -91,8 +92,8 @@ public class LoginApiController {
             .flatMap(user -> user.getPassword().equals(account.password())
                     ? generateToken(32)
                       .flatMap(token -> redisManager.addUserToken(account.email(), token)
-                      .thenReturn(new ApiResult(true, "success")))
-                    : Mono.just(new ApiResult(false, "wrong password")
+                      .thenReturn(new ApiResult(true, "success",token)))
+                    : Mono.just(new ApiResult(false, "wrong password","")
             )
     );
   }
@@ -112,5 +113,32 @@ public class LoginApiController {
               }
               return Mono.just(token.toString()) ;
             });
+  }
+
+  @PostMapping("getUser")
+  public Mono<User> getUser(@RequestBody Account account) {
+    log.info("receive getUser req: {}", account);
+    // 从Redis获取电子邮件地址
+    return redisManager.getValue(account.token())
+            .doOnNext(email -> log.debug("Retrieved email from Redis: {}", email))
+            .switchIfEmpty(Mono.error(new ChangeSetPersister.NotFoundException()))
+            .flatMap(email -> mongoUserService.findByUsername(email).singleOrEmpty())
+            .doOnError(e -> log.error("Error fetching user from MongoDB", e))
+            .doOnSuccess(user -> log.debug("User fetched successfully: {}", user));
+  }
+  @PostMapping("updateUserReq")
+  public Mono<User> updateUserReq(@RequestBody User newUser) {
+    log.info("receive updateUser req: {}", newUser);
+    return mongoUserService.findByUsername(newUser.getEmail())
+            .singleOrEmpty()
+            .flatMap(user-> {
+              log.debug("get user from mongo : {}", user);
+              if (user.getPassword().equals(newUser.getPassword())) {
+                // TODO(SJ): 添加进信息修改申请表
+                return Mono.just(user);
+              }
+              return Mono.just(user);
+            });
+
   }
 }

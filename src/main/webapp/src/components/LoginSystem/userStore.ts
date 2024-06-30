@@ -57,6 +57,8 @@ export const useUserStore = defineStore("user",()=>{
       return false
     }
     userStorage.value = new User(user.email,user.password,res.data.token,new Date().getTime() + ttl);
+    console.log("login success, cur user: ", userStorage.value)
+    userStorage.value = await getUserInfo()
     return true
   }
   const logout = ()=>{
@@ -64,6 +66,28 @@ export const useUserStore = defineStore("user",()=>{
   }
   const isExpired = ():boolean=>{
     return new Date().getTime() > userStorage.value.expiration;
+  }
+  const getUserInfo = async ():Promise<User>=>{
+    if(isExpired()) {
+      logout()
+      return new User()
+    }
+    try {
+      const res = await api.getUserInfo(userStorage.value.token)
+      console.log("get user info : ",res.data)
+      userStorage.value.name = res.data.name;
+      userStorage.value.identity = res.data.identity;
+      userStorage.value.age = res.data.age;
+      userStorage.value.phone = res.data.phone;
+      userStorage.value.address = res.data.address;
+      userStorage.value.gender = res.data.gender;
+      userStorage.value.type = res.data.type;
+      return userStorage.value
+    } catch(err) {
+      ElMessageBox.alert("getUserInfo failed, please try re-login:\n"+err)
+      logout()
+      return new User()
+    }
   }
   return {sendCaptcha, signUp, login, logout, isExpired, userStorage}
 })
