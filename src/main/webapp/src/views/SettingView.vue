@@ -4,6 +4,7 @@ import { useUserStore, type Gender, type UserType } from '@/components/LoginSyst
 import { useRouter } from 'vue-router';
 import {toggleTheme} from "@/styles/setting.ts"
 import { useApiStore } from '@/apis/useApiStore';
+import UserInfoView from '@/components/UserInfoView.vue';
 const router = useRouter()
 const logout = ()=>{
   useUserStore().logout()
@@ -32,6 +33,10 @@ const name = ref(user.name)
 const age = ref(user.age)
 const phone = ref(user.phone)
 const address = ref(user.address)
+const Hospital = ref(user.Hospital)
+const department = ref(user.department)
+const title = ref(user.title)
+const specialty = ref(user.specialty)
 console.log("user", user)
 const updateUserInfo = async ()=>{
   console.log("user", user)
@@ -46,7 +51,11 @@ const updateUserInfo = async ()=>{
     phone:phone.value,
     address:address.value,
     expiration:0,
-    token:user.token
+    token:user.token,
+    Hospital: Hospital.value,
+    department: department.value,
+    title:title.value,
+    specialty:specialty.value
   })
 }
 </script>
@@ -71,83 +80,21 @@ const updateUserInfo = async ()=>{
         </el-select>
       </div>
     </el-row>
-
-    <el-row>
-      <div id="change-UserType">
-        <el-text>用户类型  </el-text>
-        <el-select
-          v-model="userType"
-          placeholder="Select"
-          size="small"
-          style="width: 240px"
-        >
-          <el-option
-            v-for="item in userTypeOptions"
-            :key="item"
-            :label="item"
-            :value="item"
-          />
-        </el-select>
-      </div>
-    </el-row>
-
-    <el-row>
-        <el-input v-model="name">
-          <template #prefix>姓名: </template>
-        </el-input>
-    </el-row>
-
-    <el-row>
-      <div id="change-Gender">
-        <el-text>性别  </el-text>
-        <el-select
-          v-model="gender"
-          placeholder="Select"
-          size="small"
-          style="width: 240px"
-        >
-          <el-option
-            v-for="item in genderOptions"
-            :key="item"
-            :label="item"
-            :value="item"
-          />
-        </el-select>
-      </div>
-    </el-row>
-
-    <el-row>
-      <el-input v-model="psw" type="password">
-        <template #prefix>密码: </template>
-      </el-input>
-    </el-row>
-
-    <el-row>
-      <el-input v-model="identity">
-        <template #prefix>身份证号: </template>
-      </el-input>
-    </el-row>
-
-    <el-row>
-      <el-input v-model="age">
-        <template #prefix>年龄： </template>
-      </el-input>
-    </el-row>
-
-    <el-row>
-      <el-input v-model="phone">
-        <template #prefix>
-          电话:
-        </template>
-      </el-input>
-    </el-row>
-
-    <el-row>
-      <el-input v-model="address">
-        <template #prefix>住址: </template>
-      </el-input>
-    </el-row>
-
+    <user-info-view
+      v-model:user-type="userType"
+      v-model:address="address"
+      v-model:age="age"
+      v-model:gender="gender"
+      v-model:name="name"
+      v-model:identity="identity"
+      v-model:phone="phone"
+      v-model:psw="psw"
+      v-model:department="department"
+      v-model:specialty="specialty"
+      v-model:title="title"
+      v-model:-hospital="Hospital"
+    >
+    </user-info-view>
     <el-row>
       <el-col :span="8">
         <n-button @click="updateUserInfo">

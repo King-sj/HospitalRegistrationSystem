@@ -12,6 +12,10 @@ export class User {
   public phone:string='';  // 联系方式
   public address:string="";  // 住址
   public gender:Gender="Other";  // 性别
+  public Hospital:string="";
+  public department:string="";
+  public title:string="";
+  public specialty:string="";
   public constructor(email:string = "", password:string="", token:string="",expiration:number=0) {
     this.email = email;
     this.password = password;
@@ -31,6 +35,10 @@ export class User {
       phone: user.phone,
       address: user.address,
       gender: user.gender,
+      Hospital: user.Hospital,
+      department: user.department,
+      title: user.title,
+      specialty:user.specialty,
     }
   }
 }

@@ -1,5 +1,6 @@
 package com.bupt.hospitalregistrationsystem.Component.LoginSystem;
 
+import com.bupt.hospitalregistrationsystem.Model.Doctor;
 import com.bupt.hospitalregistrationsystem.Model.User;
 import com.bupt.hospitalregistrationsystem.Model.UserInfoChange;
 import com.bupt.hospitalregistrationsystem.Service.MongoUserInfoChangeService;
@@ -14,6 +15,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.bupt.hospitalregistrationsystem.Component.EmailService;
 
+import javax.print.Doc;
 import java.security.SecureRandom;
 import java.util.Random;
 
