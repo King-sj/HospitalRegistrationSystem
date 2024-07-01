@@ -19,6 +19,7 @@ const specialty = defineModel<string>("specialty",{required:true})
 const gender = defineModel<Gender>("gender",{required:true})
 </script>
 <template>
+  <main class="main-view">
   <el-row>
     <div id="change-UserType">
       <el-text>用户类型 </el-text>
@@ -94,6 +95,11 @@ const gender = defineModel<Gender>("gender",{required:true})
       <template #prefix>专长: </template>
     </el-input>
   </el-row>
+</main>
 </template>
 <style lang="scss" scoped>
+.main-view{
+  border: 1px solid #000;
+  margin: 2px;
+}
 </style>

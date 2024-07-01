@@ -8,8 +8,17 @@ public class UserInfoChange {
   private User oldUserInfo;
   private User newUserInfo;
   private String Date;
+  private Admin checker;  // 审批人
   private Boolean checked;  // 管理是否审查过
   private Boolean allowed;  // 是否通过
+
+  public Admin getChecker() {
+    return checker;
+  }
+
+  public void setChecker(Admin checker) {
+    this.checker = checker;
+  }
 
   public Boolean getAllowed() {
     return allowed;

@@ -10,14 +10,12 @@ export const useApiStore = defineStore('apiStore', () => {
     timeout: 10000,
     headers: { 'X-Custom-Header': 'foobar' }
   })
-  const user = useUserStore().userStorage;
-  async function getUserInfo() {
-    const res = await server.post('/user/info', {
-      token: user.token
-    })
+
+  async function getAllUserInfoChangeReq() {
+    const res = await server.get('getAllUserInfoChangeReq')
     return res.data
   }
   return {
-    getUserInfo,
+    getAllUserInfoChangeReq
   }
 })

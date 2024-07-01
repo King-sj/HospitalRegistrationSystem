@@ -1,40 +1,46 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import { useRouter } from 'vue-router';
+import { useUserStore } from './components/LoginSystem';
 
 const router = useRouter()
 router.push({ name: "home" })
-
+const user = useUserStore().userStorage
 </script>
 
 <template>
   <main>
-    <n-layout embedded has-sider style="height:100%;width: 100vw;">
+    <n-layout embedded has-sider style="height:100%;width: 100vw;"
+      position="absolute"
+    >
       <n-layout-sider collapse-mode="transform" :native-scrollbar="true" show-trigger="bar"
         content-style="padding: 0px;" :inverted="true" :show-collapsed-content="false" :default-collapsed="true"
         :collapsed-width="1"
+        :width="400"
         bordered>
         <n-flex vertical style="height:100%">
-          <n-button quaternary size="large" type="info" style="font-size: 3.5rem;margin: 2rem;"
+          <n-button quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
             @click="router.push({ name: 'home' })">
             Home
           </n-button>
           <n-divider />
 
-          <n-button quaternary size="large" type="info" style="font-size: 3.5rem;margin: 2rem;"
-            @click="router.push({ name: 'history' })">
-            History
+          <n-button
+            v-if="user.type='Administrator'"
+            quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
+            @click="router.push({ name: 'userInfoChangeCheck' })">
+            信息变更审核
           </n-button>
-          <n-divider />
+          <n-divider v-if="user.type='Administrator'"/>
 
-          <n-button quaternary size="large" type="info" style="font-size: 3.5rem;margin: 2rem;"
+          <n-button quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
             @click="router.push({ name: 'jours' })">
-            All Jour
+            挂号
           </n-button>
           <n-divider />
 
 
-          <n-button quaternary size="large" type="info" style="font-size: 3.5rem;margin: 2rem;"
+          <n-button quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
           @click="router.push({name:'setting'})"
         >
           Settings

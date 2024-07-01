@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router';
 import {toggleTheme} from "@/styles/setting.ts"
 import { useApiStore } from '@/apis/useApiStore';
 import UserInfoView from '@/components/UserInfoView.vue';
+import { ElMessageBox, ElMessage } from 'element-plus';
 const router = useRouter()
 const logout = ()=>{
   useUserStore().logout()
@@ -57,6 +58,7 @@ const updateUserInfo = async ()=>{
     title:title.value,
     specialty:specialty.value
   })
+  ElMessage.info('提交成功，请耐心等待管理员审批');
 }
 </script>
 <template>

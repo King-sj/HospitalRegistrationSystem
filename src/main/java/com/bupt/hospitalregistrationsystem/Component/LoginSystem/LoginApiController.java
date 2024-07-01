@@ -66,6 +66,7 @@ public class LoginApiController {
               return Mono.just(res);
             });
   }
+
   @PostMapping("signup")
   public Mono<ApiResult> signup(@RequestBody Account account) {
     log.info("receive signup req : email :{} psw:{} captcha:{}" , account.email(), account.password(), account.captcha());
@@ -153,4 +154,5 @@ public class LoginApiController {
             });
 
   }
+
 }

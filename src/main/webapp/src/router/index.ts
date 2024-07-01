@@ -45,6 +45,11 @@ const router = createRouter({
       name:"setting",
       component:()=>import("../views/SettingView.vue")
     },
+    {
+      path:"/userInfoChangeCheck",
+      name:"userInfoChangeCheck",
+      component:()=>import("../views/UserInfoChangeCheck.vue")
+    }
   ]
 })
 
