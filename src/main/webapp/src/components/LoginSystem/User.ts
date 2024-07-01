@@ -18,4 +18,19 @@ export class User {
     this.expiration = expiration;
     this.token = token;
   }
+  public static getRecord(user:User):Record<string,any> {
+    return {
+      // id: undefined,
+      type: user.type,
+      username: user.email,
+      password: user.password,
+      identity: user.identity,
+      name: user.name,
+      age: user.age,
+      email:user.email,
+      phone: user.phone,
+      address: user.address,
+      gender: user.gender,
+    }
+  }
 }

@@ -33,6 +33,22 @@ const age = ref(user.age)
 const phone = ref(user.phone)
 const address = ref(user.address)
 console.log("user", user)
+const updateUserInfo = async ()=>{
+  console.log("user", user)
+  useUserStore().updateUserInfo({
+    email:user.email,
+    name:name.value,
+    gender:gender.value,
+    type:userType.value,
+    password:psw.value,
+    identity:identity.value,
+    age:age.value,
+    phone:phone.value,
+    address:address.value,
+    expiration:0,
+    token:user.token
+  })
+}
 </script>
 <template>
   <main style="text-align: center;">
@@ -134,7 +150,7 @@ console.log("user", user)
 
     <el-row>
       <el-col :span="8">
-        <n-button @click="">
+        <n-button @click="updateUserInfo">
         提交更改
         </n-button>
       </el-col >

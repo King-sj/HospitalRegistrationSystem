@@ -1,5 +1,7 @@
 package com.bupt.hospitalregistrationsystem.Model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,7 +21,12 @@ public class User {
   private String address;  // 住址
   private Gender gender;  // 性别
 
-  public User(String id, String username, String password) {
+  @JsonCreator
+  public User(
+          @JsonProperty("id") String id,
+          @JsonProperty("username") String username,
+          @JsonProperty("password") String password
+  ) {
     this.id = id;
     this.username = username;
     this.password = password;

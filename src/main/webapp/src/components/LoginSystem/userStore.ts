@@ -89,5 +89,13 @@ export const useUserStore = defineStore("user",()=>{
       return new User()
     }
   }
-  return {sendCaptcha, signUp, login, logout, isExpired, userStorage}
+  const updateUserInfo = async (user:User):Promise<boolean>=>{
+      const res = await api.updateUserInfo(user)
+      console.log("update user info : ",res.data)
+      return true
+  }
+  return {
+    sendCaptcha, signUp, login, logout, isExpired, userStorage,
+    updateUserInfo
+  }
 })

@@ -1,8 +1,11 @@
 package com.bupt.hospitalregistrationsystem.Component.LoginSystem;
 
 import com.bupt.hospitalregistrationsystem.Model.User;
+import com.bupt.hospitalregistrationsystem.Model.UserInfoChange;
+import com.bupt.hospitalregistrationsystem.Service.MongoUserInfoChangeService;
 import com.bupt.hospitalregistrationsystem.Service.MongoUserService;
 import com.bupt.hospitalregistrationsystem.Service.RedisManger;
+import com.bupt.hospitalregistrationsystem.Utils.CurrentTime;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -22,14 +25,19 @@ public class LoginApiController {
   private final EmailService emailService;
   private final RedisManger redisManager;
   private final MongoUserService mongoUserService;
+  private final MongoUserInfoChangeService mongoUserInfoChangeService;
   private final Logger log;
   private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   @Autowired
-  public LoginApiController(EmailService emailService, RedisManger redisManger, MongoUserService mongoUserService) {
+  public LoginApiController(
+          EmailService emailService, RedisManger redisManger, MongoUserService mongoUserService,
+          MongoUserInfoChangeService mongoUserInfoChangeService
+  ) {
     this.emailService = emailService;
     this.redisManager = redisManger;
     this.mongoUserService = mongoUserService;
+    this.mongoUserInfoChangeService = mongoUserInfoChangeService;
     this.log = LoggerFactory.getLogger(LoginApiController.class);
   }
 
@@ -126,18 +134,20 @@ public class LoginApiController {
             .doOnError(e -> log.error("Error fetching user from MongoDB", e))
             .doOnSuccess(user -> log.debug("User fetched successfully: {}", user));
   }
+
   @PostMapping("updateUserReq")
-  public Mono<User> updateUserReq(@RequestBody User newUser) {
+  public Mono<UserInfoChange> updateUserReq(@RequestBody User newUser) {
     log.info("receive updateUser req: {}", newUser);
     return mongoUserService.findByUsername(newUser.getEmail())
             .singleOrEmpty()
             .flatMap(user-> {
               log.debug("get user from mongo : {}", user);
-              if (user.getPassword().equals(newUser.getPassword())) {
-                // TODO(SJ): 添加进信息修改申请表
-                return Mono.just(user);
-              }
-              return Mono.just(user);
+              var record = new UserInfoChange();
+              record.setUsername(newUser.getEmail());
+              record.setOldUserInfo(user);
+              record.setNewUserInfo(newUser);
+              record.setDate(CurrentTime.getCurrentTime());
+              return mongoUserInfoChangeService.save(record);
             });
 
   }
