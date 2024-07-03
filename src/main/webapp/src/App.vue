@@ -25,7 +25,6 @@ const user = useUserStore().userStorage
           </n-button>
           <n-divider />
 
-          {{ user.type }}
           <n-button
             v-if="user.type=='Administrator'"
             quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
@@ -35,10 +34,12 @@ const user = useUserStore().userStorage
           <n-divider v-if="user.type=='Administrator'"/>
 
           <n-button quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
-            @click="router.push({ name: 'jours' })">
+            @click="router.push({ name: 'jours' })"
+            v-if="user.type=='Patient'"
+          >
             挂号
           </n-button>
-          <n-divider />
+          <n-divider v-if="user.type=='Patient'"/>
 
 
           <n-button quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
