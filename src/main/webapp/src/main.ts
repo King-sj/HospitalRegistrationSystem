@@ -14,6 +14,7 @@ import {toggleTheme} from "@/styles/setting"
 toggleTheme(null)
 
 import "./permission"
+import {setup} from "./loop.ts"
 
 import naive from 'naive-ui'
 
@@ -26,3 +27,5 @@ app.use(ElementPlus)
 app.use(naive)
 
 app.mount('#app')
+
+// setup()  // TODO 启动loop中的循环

@@ -1,5 +1,5 @@
 export type UserType = "User" | "Administrator"  | "Patient" | "Doctor";
-export type Gender = "Male" | "Female" | "Other";
+export type Gender = "Male" | "Female" | "OTHER";
 export class User {
   public email:string;
   public password:string;
@@ -11,7 +11,7 @@ export class User {
   public age:Number=18;  // 年龄
   public phone:string='';  // 联系方式
   public address:string="";  // 住址
-  public gender:Gender="Other";  // 性别
+  public gender:Gender="OTHER";  // 性别
   public Hospital:string="";
   public department:string="";
   public title:string="";

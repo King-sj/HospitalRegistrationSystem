@@ -34,12 +34,13 @@ export const useLoginServer = defineStore("loginSystemApiServer",()=>{
     })
     return res
   }
-  async function updateUserInfo(user:User) {
+  // 提交请求
+  async function updateUserInfoReq(user:User) {
     console.log("update req:" , User.getRecord(user))
     const res = await axiosInst.post("updateUserReq",
       User.getRecord(user)
     )
     return res
   }
-  return {sendCaptcha, signUp, login, getUserInfo, updateUserInfo}
+  return {sendCaptcha, signUp, login, getUserInfo, updateUserInfoReq}
 })

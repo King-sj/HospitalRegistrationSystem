@@ -2,9 +2,17 @@
 import {defineModel} from "vue";
 import { useUserStore, type Gender, type UserType } from "./LoginSystem";
 import UserInfoView from "./UserInfoView.vue";
-// const user = useUserStore().userStorage
+import { useApiStore } from "@/apis/useApiStore";
+import { UserInfoChange } from "@/apis/UserInfoChange";
+import { ElMessage } from "element-plus";
+const emit = defineEmits<{
+  (e: 'checked'): void
+}>()
 
-const genderOptions: Gender[] = ["Male", "Female", "Other"];
+// const user = useUserStore().userStorage
+const api = useApiStore()
+
+const genderOptions: Gender[] = ["Male", "Female", "OTHER"];
 const userTypeOptions:UserType[] =["User","Administrator","Doctor","Patient"];
 
 const old_userType = defineModel<UserType>("old_userType",{ required: true})
@@ -34,7 +42,17 @@ const new_specialty = defineModel<string>("new_specialty",{required:true})
 const new_gender = defineModel<Gender>("new_gender",{required:true})
 
 const date = defineModel<string>("date", {required:true})
-
+const username = defineModel<string>("username", {required:true})
+const agree = async (agr:boolean)=>{
+  const uic = new UserInfoChange();
+  uic.Date = date.value;
+  uic.username = username.value;
+  uic.allowed = agr;
+  emit("checked")
+  const res = await api.executeUserInfoChangeReq(uic);
+  console.log("change res ", res)
+  ElMessage.info("已处理")
+}
 </script>
 <template>
   <main class="main-view">
@@ -54,6 +72,7 @@ const date = defineModel<string>("date", {required:true})
       v-model:specialty="old_specialty"
       v-model:title="old_title"
       v-model:-hospital="old_Hospital"
+      readonly
     >
 
     </user-info-view>
@@ -71,13 +90,14 @@ const date = defineModel<string>("date", {required:true})
       v-model:specialty="new_specialty"
       v-model:title="new_title"
       v-model:-hospital="new_Hospital"
+      readonly
     >
     </user-info-view>
     <n-flex>
-      <n-button>
+      <n-button @click="agree(true)">
         同意
       </n-button>
-      <n-button>
+      <n-button @click="agree(false)">
         驳回
       </n-button>
     </n-flex>
@@ -89,5 +109,6 @@ const date = defineModel<string>("date", {required:true})
   border: 1px solid #1f79a9;
   border-radius: 5px;
   margin-bottom: 5px;
+  color:red;
 }
 </style>

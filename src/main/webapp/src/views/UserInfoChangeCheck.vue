@@ -18,6 +18,8 @@ onMounted(async ()=>{
   <div v-for="change in userInfoChanges" :key="change.date" :change="change">
   <UserInfoSetting
     v-if="change.checked == null || change.checked == false"
+    @checked="change.checked = true"
+
     v-model:old_user-type="change.oldUserInfo.type"
     v-model:old_address="change.oldUserInfo.address"
     v-model:old_age="change.oldUserInfo.age"
@@ -45,6 +47,7 @@ onMounted(async ()=>{
     v-model:new_Hospital="change.newUserInfo.Hospital"
 
     v-model:date="change.date"
+    v-model:username="change.username"
   />
   </div>
 

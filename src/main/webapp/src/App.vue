@@ -25,13 +25,14 @@ const user = useUserStore().userStorage
           </n-button>
           <n-divider />
 
+          {{ user.type }}
           <n-button
-            v-if="user.type='Administrator'"
+            v-if="user.type=='Administrator'"
             quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
             @click="router.push({ name: 'userInfoChangeCheck' })">
             信息变更审核
           </n-button>
-          <n-divider v-if="user.type='Administrator'"/>
+          <n-divider v-if="user.type=='Administrator'"/>
 
           <n-button quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
             @click="router.push({ name: 'jours' })">

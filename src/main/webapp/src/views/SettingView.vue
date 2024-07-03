@@ -24,7 +24,7 @@ watch(theme,
   immediate:true
 }
 )
-const genderOptions: Gender[] = ["Male", "Female", "Other"];
+const genderOptions: Gender[] = ["Male", "Female", "OTHER"];
 const gender = ref(user.gender);
 const userTypeOptions:UserType[] =["User","Administrator","Doctor","Patient"];
 const userType = ref(user.type);
@@ -39,9 +39,9 @@ const department = ref(user.department)
 const title = ref(user.title)
 const specialty = ref(user.specialty)
 console.log("user", user)
-const updateUserInfo = async ()=>{
+const updateUserInfoReq = async ()=>{
   console.log("user", user)
-  useUserStore().updateUserInfo({
+  useUserStore().updateUserInfoReq({
     email:user.email,
     name:name.value,
     gender:gender.value,
@@ -99,7 +99,7 @@ const updateUserInfo = async ()=>{
     </user-info-view>
     <el-row>
       <el-col :span="8">
-        <n-button @click="updateUserInfo">
+        <n-button @click="updateUserInfoReq">
         提交更改
         </n-button>
       </el-col >

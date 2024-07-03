@@ -44,6 +44,9 @@ export const useUserStore = defineStore("user",()=>{
       return false
     }
   }
+  const updateUser = async ()=>{
+    userStorage.value = await getUserInfo()
+  }
   const login = async (user:User):Promise<boolean>=>{
     try {
       var res = await api.login(user)
@@ -58,7 +61,7 @@ export const useUserStore = defineStore("user",()=>{
     }
     userStorage.value = new User(user.email,user.password,res.data.token,new Date().getTime() + ttl);
     console.log("login success, cur user: ", userStorage.value)
-    userStorage.value = await getUserInfo()
+    updateUser()
     return true
   }
   const logout = ()=>{
@@ -82,6 +85,12 @@ export const useUserStore = defineStore("user",()=>{
       userStorage.value.address = res.data.address;
       userStorage.value.gender = res.data.gender;
       userStorage.value.type = res.data.type;
+      userStorage.value.Hospital = res.data.Hospital;
+      userStorage.value.department = res.data.department;
+      userStorage.value.title = res.data.title;
+      userStorage.value.specialty = res.data.specialty;
+      userStorage.value.password = res.data.password;
+      userStorage.value.email = res.data.email;
       return userStorage.value
     } catch(err) {
       ElMessageBox.alert("getUserInfo failed, please try re-login:\n"+err)
@@ -89,13 +98,14 @@ export const useUserStore = defineStore("user",()=>{
       return new User()
     }
   }
-  const updateUserInfo = async (user:User):Promise<boolean>=>{
-      const res = await api.updateUserInfo(user)
+  // 提交请求
+  const updateUserInfoReq = async (user:User):Promise<boolean>=>{
+      const res = await api.updateUserInfoReq(user)
       console.log("update user info : ",res.data)
       return true
   }
   return {
     sendCaptcha, signUp, login, logout, isExpired, userStorage,
-    updateUserInfo
+    updateUserInfoReq, updateUser
   }
 })
