@@ -72,6 +72,7 @@ const booked = (item:AttendanceInformation)=> {
           readonly
         />
         <n-flex>
+        <!-- TODO 挂号到期前一天或更早取消预约 -->
           <p v-if="booked(item)">已预约</p>
           <el-button type="primary" @click="booking(item)"
             v-if="!booked(item)"

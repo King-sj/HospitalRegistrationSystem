@@ -17,3 +17,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 })
+
+// TODO 第一次管理员登录强制改密码
