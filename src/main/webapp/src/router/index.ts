@@ -49,6 +49,16 @@ const router = createRouter({
       path:"/userInfoChangeCheck",
       name:"userInfoChangeCheck",
       component:()=>import("../views/UserInfoChangeCheck.vue")
+    },
+    {
+      path:"/postAttendanceInformation",
+      name:"postAttendanceInformation",
+      component:()=>import("../views/PostAttendanceInformationView.vue")
+    },
+    {
+      path:"/postAttendanceInformationCheck",
+      name:"postAttendanceInformationCheck",
+      component:()=>import("../views/PostAttendanceInformationCheckView.vue")
     }
   ]
 })

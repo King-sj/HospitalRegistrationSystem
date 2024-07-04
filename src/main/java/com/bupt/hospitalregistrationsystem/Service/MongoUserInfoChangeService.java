@@ -1,5 +1,6 @@
 package com.bupt.hospitalregistrationsystem.Service;
 
+import com.bupt.hospitalregistrationsystem.Component.EmailService;
 import com.bupt.hospitalregistrationsystem.Model.UserInfoChange;
 import com.bupt.hospitalregistrationsystem.Model.UserInfoChangeRepository;
 import com.bupt.hospitalregistrationsystem.Model.UserRepository;
@@ -16,14 +17,17 @@ import reactor.core.publisher.Mono;
 public class MongoUserInfoChangeService {
   private final UserInfoChangeRepository userInfoChangeRepository;
   private final UserRepository userRepository;
+  private final EmailService emailService;
 
   @Autowired
   public MongoUserInfoChangeService(
           UserInfoChangeRepository userInfoChangeRepository,
-          UserRepository userRepository
+          UserRepository userRepository,
+          EmailService emailService
   ) {
     this.userInfoChangeRepository = userInfoChangeRepository;
     this.userRepository = userRepository;
+    this.emailService = emailService;
   }
   public Mono<UserInfoChange> save(UserInfoChange info) {
     return this.userInfoChangeRepository.save(info);
@@ -47,6 +51,7 @@ public class MongoUserInfoChangeService {
              return userInfoChangeRepository.save(uic)
                      .flatMap(savedUic -> {
                        if (uic.getAllowed()) {
+                         emailService.sendSimpleMessage(uic.getOldUserInfo().getEmail(),"你的申请已通过","信息修改。Date:"+uic.getDate());
                          return userRepository.save(newUser)
                                  .then(Mono.just(true));
                        } else {

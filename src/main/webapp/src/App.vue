@@ -34,6 +34,21 @@ const user = useUserStore().userStorage
           <n-divider v-if="user.type=='Administrator'"/>
 
           <n-button quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
+            @click="router.push({ name: 'postAttendanceInformation' })"
+            v-if="user.type=='Doctor'"
+          >
+            出诊信息
+          </n-button>
+          <n-divider v-if="user.type=='Doctor'"/>
+          <n-button quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
+            @click="router.push({ name: 'postAttendanceInformationCheck' })"
+            v-if="user.type=='Administrator'"
+          >
+            出诊信息审核
+          </n-button>
+          <n-divider v-if="user.type=='Administrator'"/>
+
+          <n-button quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
             @click="router.push({ name: 'jours' })"
             v-if="user.type=='Patient'"
           >

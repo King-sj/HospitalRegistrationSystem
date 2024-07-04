@@ -1,17 +1,19 @@
 package com.bupt.hospitalregistrationsystem.Controler;
 
+import com.bupt.hospitalregistrationsystem.Component.EmailService;
 import com.bupt.hospitalregistrationsystem.Component.LoginSystem.LoginApiController;
+import com.bupt.hospitalregistrationsystem.Configuration.InstallNormalService;
 import com.bupt.hospitalregistrationsystem.Model.Admin;
+import com.bupt.hospitalregistrationsystem.Model.AttendanceInformation;
 import com.bupt.hospitalregistrationsystem.Model.User;
 import com.bupt.hospitalregistrationsystem.Model.UserInfoChange;
+import com.bupt.hospitalregistrationsystem.Service.MongoAttendanceInformationService;
 import com.bupt.hospitalregistrationsystem.Service.MongoUserInfoChangeService;
 import com.bupt.hospitalregistrationsystem.Service.MongoUserService;
 import com.bupt.hospitalregistrationsystem.Service.RedisManger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -19,20 +21,14 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api")
-public class ApiControler {
-  private final RedisManger redisManager;
-  private final MongoUserService mongoUserService;
-  private final MongoUserInfoChangeService mongoUserInfoChangeService;
-  private final Logger log;
+public class ApiController extends InstallNormalService {
 
   @Autowired
-  public ApiControler(
-          RedisManger redisManager, MongoUserService mongoUserService, MongoUserInfoChangeService mongoUserInfoChangeService
+  public ApiController(
+          RedisManger redisManager, MongoUserService mongoUserService, MongoUserInfoChangeService mongoUserInfoChangeService,
+          EmailService emailService, MongoAttendanceInformationService mongoAttendanceInformationService
   ) {
-    this.redisManager = redisManager;
-    this.mongoUserService = mongoUserService;
-    this.mongoUserInfoChangeService = mongoUserInfoChangeService;
-    this.log = LoggerFactory.getLogger(LoginApiController.class);
+    super(redisManager, mongoUserService, mongoUserInfoChangeService, mongoAttendanceInformationService, emailService);
   }
   @GetMapping("/test")
   public Mono<User> test(){
@@ -56,4 +52,13 @@ public class ApiControler {
     return mongoUserInfoChangeService.executeUserInfoChangeReq(userInfoChange);
   }
 
+  @PostMapping("getAttendanceInformation")
+  public Flux<AttendanceInformation> getAttendanceInformation(@RequestBody AttendanceInformation attendanceInformation){
+    log.info("receive req getAttendanceInformation, {}", attendanceInformation);
+    if (attendanceInformation.getDoctorUsername().isEmpty())
+      return mongoAttendanceInformationService.findAll();
+    else
+      return mongoAttendanceInformationService
+              .findByDoctorUsername(attendanceInformation.getDoctorUsername());
+  }
 }

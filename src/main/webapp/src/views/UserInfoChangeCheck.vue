@@ -1,20 +1,36 @@
 <script lang="ts" setup>
 import { useApiStore } from '@/apis/useApiStore';
-import { onMounted, ref, type Ref } from 'vue';
+import { computed, onMounted, ref, type Ref } from 'vue';
 import UserInfoSetting from '@/components/UserInfoSetting.vue';
+import { ElMessage } from 'element-plus';
 const api = useApiStore()
 
 const userInfoChanges:Ref<any[]> = ref([])
-onMounted(async ()=>{
+const checkCnt = computed(()=>{
+  var cnt = 0;
+  userInfoChanges.value.forEach((item:any)=>{
+    if (item.checked == true) cnt++;
+  })
+  return cnt
+})
+const update = async ()=>{
   var res = await api.getAllUserInfoChangeReq()
   userInfoChanges.value = res.sort((a:any,b:any)=>{
     return new Date(b.date).getTime() - new Date(a.date).getTime()
   })
-  console.log("user info changes", userInfoChanges.value)
-})
+  // console.log("user info changes", userInfoChanges.value)
+  ElMessage.info("update")
+}
+onMounted(update)
 </script>
 <template>
-  This is use info change view
+  <div v-if="userInfoChanges.length - checkCnt <= 0">
+    <p >
+      暂时没有更多结果了哦
+    </p>
+  <el-button type='primary' @click='update'>刷新一下</el-button>
+  </div>
+
   <div v-for="change in userInfoChanges" :key="change.date" :change="change">
   <UserInfoSetting
     v-if="change.checked == null || change.checked == false"
