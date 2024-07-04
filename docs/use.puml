@@ -1,0 +1,41 @@
+@startuml use
+left to right direction
+actor Patient
+actor Doctor
+actor Admin
+
+rectangle "前端系统" {
+  usecase "登录" as UC1
+  usecase "预约挂号" as UC2
+  usecase "查看预约信息" as UC3
+  usecase "修改个人信息" as UC4
+}
+
+rectangle "后端系统" {
+  usecase "验证用户信息" as UC5
+  usecase "查询医生出诊信息" as UC6
+  usecase "保存预约信息" as UC7
+  usecase "查询预约信息" as UC8
+  usecase "审核医生注册" as UC9
+  usecase "审核出诊信息" as UC10
+}
+
+Patient --> UC1
+Patient --> UC2
+Patient --> UC4
+Doctor --> UC1
+Doctor --> UC3
+Doctor --> UC4
+Admin --> UC1
+Admin --> UC4
+Admin --> UC9
+Admin --> UC10
+
+UC1 ..> UC5 : 包含
+UC2 ..> UC6 : 包含
+UC2 ..> UC7 : 包含
+UC3 ..> UC8 : 包含
+UC9 ..> UC5 : 包含
+UC10 ..> UC6 : 包含
+
+@enduml
