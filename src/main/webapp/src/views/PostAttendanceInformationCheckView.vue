@@ -29,7 +29,7 @@ onMounted(async () => {
       {{ item }}
       <p>账号:  {{item.doctorUsername}}</p>
       <AttendanceCard
-        v-model:num="item.cnt"
+        v-model:num="item.maxCnt"
         :attendance-time="[item.startTime, item.endTime]"
         readonly
       />

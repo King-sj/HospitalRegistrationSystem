@@ -63,6 +63,7 @@ public class User {
   ) {
     this.id = id;
     this.username = username;
+    this.email = username;  // todo 暂时把email和username用同一个
     this.password = password;
     this.type = UserType.User;
     this.gender = Gender.MALE;

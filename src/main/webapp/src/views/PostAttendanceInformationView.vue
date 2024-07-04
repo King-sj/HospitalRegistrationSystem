@@ -46,7 +46,9 @@ const post = async () => {
         <div v-for="item in infos" :key="item.id">
           {{ item }}
           <div style="color: red;">
-            <p v-if="item.checked == true">已审核</p>
+            <p v-if="item.checked == true">
+              {{item.pass == true ? "通过" : "未通过"}}
+            </p>
             <p v-else>未审核</p>
           </div>
 
