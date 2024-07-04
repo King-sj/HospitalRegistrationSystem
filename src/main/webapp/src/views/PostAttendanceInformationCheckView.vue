@@ -24,8 +24,8 @@ onMounted(async () => {
 </script>
 <template>
   <div>
-    <div v-for="item in infos" :key="item.id" class="check-view">
-      <div v-if="item.checked == false">
+    <div v-for="item in infos" :key="item.id" >
+      <div v-if="item.checked == false" class="check-view">
         <p>账号: {{ item.doctorUsername }}</p>
         <AttendanceCard
           v-model:num="item.maxCnt"

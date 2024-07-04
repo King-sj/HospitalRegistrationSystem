@@ -62,12 +62,12 @@ const post = async () => {
             :attendance-time="[item.startTime, item.endTime]"
             readonly
           />
-          <div v-for="patient in item.patients" :key="patient.username">
-            {{ patient }}
+          <div v-for="patient in item.patients" :key="patient.username"
+          class="patient-view">
             <p>
-              {{ patient.name }}
+              患者姓名:{{ patient.name }}
             </p>
-            <p>{{ patient.email }}</p>
+            <p>患者联系方式:{{ patient.email }}</p>
           </div>
         </div>
       </el-collapse-item>
@@ -75,7 +75,7 @@ const post = async () => {
   </div>
 </template>
 <style lang='scss' scoped>
-.infos-view{
+.infos-view,.patient-view{
   border: 1px solid #000;
   margin-bottom: 2px;
 }

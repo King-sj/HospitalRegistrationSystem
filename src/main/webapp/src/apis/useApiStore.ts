@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import axios from 'axios'
 import {serverConfig} from "@/configs"
-import { useUserStore } from '@/components/LoginSystem'
+import { User, useUserStore } from '@/components/LoginSystem'
 import { UserInfoChange } from './UserInfoChange'
 import { AttendanceInformation } from './apiTypes'
 useUserStore().userStorage.token
@@ -47,12 +47,19 @@ export const useApiStore = defineStore('apiStore', () => {
     )
     return res.data
   }
+  async function getMedicalRecord(user:User) {
+    const res = await server.post("getMedicalRecord",
+      User.getRecord(user)
+    )
+    return res.data
+  }
   return {
     getAllUserInfoChangeReq,
     executeUserInfoChangeReq,
     postAttendanceInformation,
     bookDoctor,
     getAttendanceInformation,
-    checkAttendanceInfo
+    checkAttendanceInfo,
+    getMedicalRecord
   }
 })

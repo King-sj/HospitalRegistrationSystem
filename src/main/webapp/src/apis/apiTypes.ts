@@ -10,6 +10,7 @@ export class AttendanceInformation {
   public checked:boolean=false;
   public checker:User=new User();
   public pass:boolean=false;
+  public patients:User[]=[];
   public constructor() {
   }
   public static getRecord(obj:AttendanceInformation):Record<string,any> {
@@ -23,6 +24,7 @@ export class AttendanceInformation {
       checked:obj.checked,
       checker:User.getRecord(obj.checker),
       pass:obj.pass,
+      patients:obj.patients.map(User.getRecord)
     }
   }
 }

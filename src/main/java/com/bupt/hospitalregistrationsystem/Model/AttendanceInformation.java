@@ -19,7 +19,7 @@ public class AttendanceInformation {
   private String endTime;
   private int maxCnt;
   private int cnt;  // 出诊次数
-  private ArrayList<Patient> patients;
+  private ArrayList<User> patients;
   private boolean checked;
   private User checker;
   private boolean pass;
@@ -63,7 +63,7 @@ public class AttendanceInformation {
     this.checked = checked;
   }
 
-  public void addPatient(Patient patient) {
+  public void addPatient(User patient) {
     this.patients.add(patient);
   }
   public int getMaxCnt() {
@@ -74,11 +74,11 @@ public class AttendanceInformation {
     this.maxCnt = maxCnt;
   }
 
-  public ArrayList<Patient> getPatients() {
+  public ArrayList<User> getPatients() {
     return patients;
   }
 
-  public void setPatients(ArrayList<Patient> patients) {
+  public void setPatients(ArrayList<User> patients) {
     this.patients = patients;
   }
 

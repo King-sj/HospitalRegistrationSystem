@@ -4,12 +4,9 @@ import { useUserStore } from "@/components/LoginSystem";
 import { ElMessage } from "element-plus";
 import { ref, onMounted, type Ref } from "vue";
 import AttendanceCard from "@/components/AttendanceInfoCard.vue";
-import Pay from "@/components/Pay.vue";
 const api = useApiStore();
 const user = useUserStore().userStorage;
 const infos = ref();
-const date = ref("");
-const department = ref("");
 const name = ref("");
 const medicalHistory:Ref<any[]> = ref([])
 const update = async () => {
@@ -24,32 +21,6 @@ const update = async () => {
 onMounted(async () => {
   update();
 });
-const shortcuts = [
-  {
-    text: "Tomorrow",
-    value: () => {
-      const date = new Date();
-      date.setDate(date.getDate() + 1);
-      return date;
-    },
-  },
-  {
-    text: "a day after Tomorrow",
-    value: () => {
-      const date = new Date();
-      date.setDate(date.getDate() + 2);
-      return date;
-    },
-  },
-  {
-    text: "3 days later",
-    value: () => {
-      const date = new Date();
-      date.setDate(date.getDate() + 3);
-      return date;
-    },
-  },
-];
 const disabledDate = (time: Date) => {
   const now = new Date();
   const threeDaysLater = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
@@ -60,8 +31,6 @@ const booking = async (req:AttendanceInformation) => {
   console.log("dd", req)
   const res =await api.bookDoctor(req);
   ElMessage.info("派对中，等通知...")
-  payVisible.value = true
-  update
 }
 const booked = (item:AttendanceInformation)=> {
   for (var x of medicalHistory.value) {
@@ -71,29 +40,8 @@ const booked = (item:AttendanceInformation)=> {
   }
   return false;
 }
-const payVisible = ref(false)
 </script>
 <template>
-  <div class="search-info-view">
-    <n-flex>
-      <el-date-picker
-        v-model="date"
-        type="date"
-        placeholder="Pick a day"
-        :disabled-date="disabledDate"
-        :shortcuts="shortcuts"
-        format="YYYY-MM-DD"
-        value-format="YYYY-MM-DD"
-        date-format="YYYY-MM-DD ddd"
-      />
-      <el-input v-model="department">
-        <template #prefix>科室</template>
-      </el-input>
-      <el-input v-model="name">
-        <template #prefix>专家姓名</template>
-      </el-input>
-    </n-flex>
-  </div>
   <div>
     <div v-for="item in infos" :key="item.id">
       <div
@@ -101,7 +49,8 @@ const payVisible = ref(false)
           item.checked == true &&
           item.pass == true &&
           !disabledDate(new Date(item.endTime)) &&
-          item.doctor.name.includes(name)
+          item.doctor.name.includes(name) &&
+          booked(item)
         "
         class="infos-view"
         :key="item.id"
@@ -122,7 +71,6 @@ const payVisible = ref(false)
           :attendance-time="[item.startTime, item.endTime]"
           readonly
         />
-        <Pay v-model:visible="payVisible" id="payView"></Pay>
         <n-flex>
           <p v-if="booked(item)">已预约</p>
           <el-button type="primary" @click="booking(item)"
@@ -142,9 +90,5 @@ const payVisible = ref(false)
 .infos-view {
   border: 1px solid #000;
   margin-bottom: 2px;
-}
-#payView{
-  width:200px;
-  background:red;
 }
 </style>

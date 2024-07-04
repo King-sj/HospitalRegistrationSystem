@@ -35,6 +35,6 @@ onMounted(async()=>{
 
 <template>
   <main>
-    This is home
+    <h>欢迎使用专家挂号系统</h>
   </main>
 </template>

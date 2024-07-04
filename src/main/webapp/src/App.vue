@@ -56,6 +56,14 @@ const user = useUserStore().userStorage
           </n-button>
           <n-divider v-if="user.type=='Patient'"/>
 
+          <n-button quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
+            @click="router.push({ name: 'itinerary' })"
+            v-if="user.type=='Patient'"
+          >
+            行程
+          </n-button>
+          <n-divider v-if="user.type=='Patient'"/>
+
 
           <n-button quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
           @click="router.push({name:'setting'})"

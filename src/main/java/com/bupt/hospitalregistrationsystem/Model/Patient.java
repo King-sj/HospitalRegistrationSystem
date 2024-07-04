@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 @Document
 public class Patient extends User {
-  private final ArrayList<MedicalRecordItem> medicalRecord;  // 暂时不用放到User
   @JsonCreator
   public Patient(
           @JsonProperty("id") String id,
@@ -17,14 +16,5 @@ public class Patient extends User {
   ) {
     super(id, username, password);
     this.setType(UserType.Patient);
-    this.medicalRecord = new ArrayList<>();
-  }
-
-  public ArrayList<MedicalRecordItem> getMedicalRecord() {
-    return medicalRecord;
-  }
-
-  public void addMedicalRecord(MedicalRecordItem medicalRecordItem) {
-    this.medicalRecord.add(medicalRecordItem);
   }
 }

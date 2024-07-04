@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+
 
 @Document
 public class User {
@@ -20,8 +22,34 @@ public class User {
   private String phone;  // 联系方式
   private String address;  // 住址
   private Gender gender;  // 性别
+  private ArrayList<MedicalRecordItem> medicalRecord;
   // TODO(SJ) 下策， 将三者共有的数据都放到User中, 以便于前端传来的Json数据不被抛弃且能享受到自动解析json的好处
   public String hospital, department, title, specialty;  // 所在医院、科室、职称、专长
+  @JsonCreator
+  public User(
+          @JsonProperty("id") String id,
+          @JsonProperty("username") String username,
+          @JsonProperty("password") String password
+  ) {
+    this.id = id;
+    this.username = username;
+    this.email = username;  // todo 暂时把email和username用同一个
+    this.password = password;
+    this.type = UserType.User;
+    this.gender = Gender.MALE;
+    this.medicalRecord = new ArrayList<>();
+  }
+
+  public ArrayList<MedicalRecordItem> getMedicalRecord() {
+    return medicalRecord;
+  }
+  public void addMedicalRecord(MedicalRecordItem medicalRecordItem) {
+    this.medicalRecord.add(medicalRecordItem);
+  }
+
+  public void setMedicalRecord(ArrayList<MedicalRecordItem> medicalRecord) {
+    this.medicalRecord = medicalRecord;
+  }
 
   public String getHospital() {
     return hospital;
@@ -55,19 +83,7 @@ public class User {
     this.specialty = specialty;
   }
 
-  @JsonCreator
-  public User(
-          @JsonProperty("id") String id,
-          @JsonProperty("username") String username,
-          @JsonProperty("password") String password
-  ) {
-    this.id = id;
-    this.username = username;
-    this.email = username;  // todo 暂时把email和username用同一个
-    this.password = password;
-    this.type = UserType.User;
-    this.gender = Gender.MALE;
-  }
+
 
   public UserType getType() {
     return type;

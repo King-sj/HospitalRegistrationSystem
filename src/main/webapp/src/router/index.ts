@@ -65,6 +65,11 @@ const router = createRouter({
       name:"bookingDoctor",
       component:()=>import("../views/BookingView.vue")
     },
+    {
+      path:"/itinerary",
+      name:"itinerary",
+      component:()=>import("../views/ItineraryView.vue")
+    },
   ]
 })
 
