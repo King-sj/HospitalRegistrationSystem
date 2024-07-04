@@ -59,7 +59,12 @@ const router = createRouter({
       path:"/postAttendanceInformationCheck",
       name:"postAttendanceInformationCheck",
       component:()=>import("../views/PostAttendanceInformationCheckView.vue")
-    }
+    },
+    {
+      path:"/bookingDoctor",
+      name:"bookingDoctor",
+      component:()=>import("../views/BookingView.vue")
+    },
   ]
 })
 

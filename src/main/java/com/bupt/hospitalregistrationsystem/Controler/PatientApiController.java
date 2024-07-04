@@ -29,6 +29,7 @@ public class PatientApiController extends InstallNormalService {
 
   @PostMapping("bookDoctor")
   public Mono<Boolean> bookDoctor(@RequestBody AttendanceInformation attendanceInformation) {
+    log.info("receive req for bookDoctor, {}", attendanceInformation);
     return mongoAttendanceInformationService
             .findById(attendanceInformation.getId())
             .flatMap(Mono::just)

@@ -13,7 +13,10 @@ const num = ref(5);
 const update = async () => {
   var req = new AttendanceInformation();
   req.doctorUsername = user.email; // 使用email作为唯一用户名
-  infos.value = await api.getAttendanceInformation(req);
+  const res  = await api.getAttendanceInformation(req);
+  infos.value = res.sort((a:any, b:any) => {
+    return new Date(b.endTime).getTime() - new Date(a.endTime).getTime()
+  })
 };
 onMounted(async () => {
   update();
@@ -43,11 +46,13 @@ const post = async () => {
         </div>
       </el-collapse-item>
       <el-collapse-item title="查看出诊信息" name="2">
-        <div v-for="item in infos" :key="item.id">
-          {{ item }}
+        <div v-for="item in infos" :key="item.id" class="infos-view">
           <div style="color: red;">
-            <p v-if="item.checked == true">
-              {{item.pass == true ? "通过" : "未通过"}}
+            <p v-if="new Date(item.endTime).getTime() < new Date().getTime()">
+              已结束
+            </p>
+            <p v-else-if="item.checked == true">
+              {{item.pass == true ? (item.cnt == item.maxCnt ?  "已报满":"通过") : "未通过"}}
             </p>
             <p v-else>未审核</p>
           </div>
@@ -69,3 +74,9 @@ const post = async () => {
     </el-collapse>
   </div>
 </template>
+<style lang='scss' scoped>
+.infos-view{
+  border: 1px solid #000;
+  margin-bottom: 2px;
+}
+</style>

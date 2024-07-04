@@ -21,14 +21,14 @@ public class User {
   private String address;  // 住址
   private Gender gender;  // 性别
   // TODO(SJ) 下策， 将三者共有的数据都放到User中, 以便于前端传来的Json数据不被抛弃且能享受到自动解析json的好处
-  public String Hospital, department, title, specialty;  // 所在医院、科室、职称、专长
+  public String hospital, department, title, specialty;  // 所在医院、科室、职称、专长
 
   public String getHospital() {
-    return Hospital;
+    return hospital;
   }
 
   public void setHospital(String hospital) {
-    Hospital = hospital;
+    this.hospital = hospital;
   }
 
   public String getDepartment() {

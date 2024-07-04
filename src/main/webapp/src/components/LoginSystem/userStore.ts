@@ -68,7 +68,9 @@ export const useUserStore = defineStore("user",()=>{
     userStorage.value = new User();
   }
   const isExpired = ():boolean=>{
-    return new Date().getTime() > userStorage.value.expiration;
+    const res = new Date().getTime() > userStorage.value.expiration;
+    if (res)logout()
+    return res
   }
   const getUserInfo = async ():Promise<User>=>{
     if(isExpired()) {

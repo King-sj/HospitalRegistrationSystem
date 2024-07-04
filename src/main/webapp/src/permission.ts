@@ -2,7 +2,7 @@ import router from "@/router/index";
 import { ElMessageBox } from 'element-plus'
 import { useUserStore } from "@/components/LoginSystem";
 const noNeedLogin = (name: String | undefined):boolean=>{
-  const pages : String[] = ["login", "signUp", "setting"]
+  const pages : String[] = ["login", "signUp"]
   return name ? pages.includes(name) : false
 }
 router.beforeEach((to, from, next) => {

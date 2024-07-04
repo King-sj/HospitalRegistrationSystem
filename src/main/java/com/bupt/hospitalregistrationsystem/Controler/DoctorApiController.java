@@ -28,6 +28,11 @@ public class DoctorApiController extends InstallNormalService {
   public Mono<AttendanceInformation> postAttendanceInformation(@RequestBody AttendanceInformation attendanceInformation) {
     log.info("received attendance information: {}" , attendanceInformation);
     attendanceInformation.setId(UUID.randomUUID().toString());
-    return mongoAttendanceInformationService.save(attendanceInformation);
+    return mongoUserService.findByUsername(attendanceInformation.getDoctorUsername())
+                    .singleOrEmpty()
+                    .flatMap(doctor-> {
+                      attendanceInformation.setDoctor(doctor);
+                      return mongoAttendanceInformationService.save(attendanceInformation);
+                    });
   }
 }

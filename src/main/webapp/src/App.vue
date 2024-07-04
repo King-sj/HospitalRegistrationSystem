@@ -49,10 +49,10 @@ const user = useUserStore().userStorage
           <n-divider v-if="user.type=='Administrator'"/>
 
           <n-button quaternary size="small" type="info" style="font-size: 3.5rem;margin: 2rem;"
-            @click="router.push({ name: 'jours' })"
+            @click="router.push({ name: 'bookingDoctor' })"
             v-if="user.type=='Patient'"
           >
-            挂号
+            预约挂号
           </n-button>
           <n-divider v-if="user.type=='Patient'"/>
 

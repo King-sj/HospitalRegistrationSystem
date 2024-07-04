@@ -23,10 +23,20 @@ public class AttendanceInformation {
   private boolean checked;
   private User checker;
   private boolean pass;
+  private User doctor;
+
   @JsonCreator
   public AttendanceInformation() {
     this.id = UUID.randomUUID().toString();
     this.patients = new ArrayList<>();
+  }
+
+  public User getDoctor() {
+    return doctor;
+  }
+
+  public void setDoctor(User doctor) {
+    this.doctor = doctor;
   }
 
   public User getChecker() {

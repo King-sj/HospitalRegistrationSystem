@@ -84,10 +84,11 @@ const num = defineModel<number>("num",{required:true});
     },
   },
 ];
+const disabledDate = (time: Date) => {
+  return time.getTime() < Date.now()
+}
 </script>
 <template>
-  <p>attendanceTime{{attendanceTime}}</p>
-
   <el-card>
     <template #header>
       <el-date-picker
@@ -103,6 +104,7 @@ const num = defineModel<number>("num",{required:true});
         time-format="HH:mm:ss"
         :readonly="props.readonly"
         :disabled="props.readonly"
+        :disabled-date="disabledDate"
       />
     </template>
     <p>出诊数量</p>
