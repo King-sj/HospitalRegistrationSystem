@@ -1,0 +1,38 @@
+@startuml
+
+title 用户管理活动图
+
+start
+:用户注册/登录;
+:选择用户类型;
+
+if (选择患者?) then (yes)
+  :填写患者个人信息;
+  :提交注册请求;
+  :管理员审批患者;
+  if (审批通过?) then (yes)
+    :患者账户激活;
+    :患者登录;
+  else (no)
+    :注册失败;
+  endif
+else (no)
+  if (选择医生?) then (yes)
+    :填写医生信息;
+    :提交注册请求;
+    :管理员审批医生;
+    if (审批通过?) then (yes)
+      :医生账户激活;
+      :医生登录;
+    else (no)
+      :注册失败;
+    endif
+  else (选择管理员?)
+    :系统管理员审批;
+    :管理员登录;
+  endif
+endif
+
+stop
+
+@enduml

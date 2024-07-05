@@ -1,0 +1,27 @@
+@startuml
+
+title 患者挂号活动图
+
+start
+:患者登录;
+:选择挂号时间;
+:选择科室;
+:选择专家;
+:查询是否有号;
+
+if (有号?) then (yes)
+  :进行挂号;
+  :模拟支付;
+  :记录挂号信息;
+  :查看历史信息;
+  if(查看?) then (yes)
+  :选择时间查看;
+  else (no)
+  endif
+else (no)
+  :提示无号;
+endif
+
+stop
+
+@enduml
