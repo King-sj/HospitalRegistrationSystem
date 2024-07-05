@@ -1,0 +1,128 @@
+@startuml class
+package com.bupt.hospitalregistrationsystem.Model {
+  class User {
+    - id: String
+    - name: String
+    - address: String
+    - contact: String
+    - userType: UserType
+    + User(id, name, address, contact, userType)
+    + setId(id)
+    + setName(name)
+    + setAddress(address)
+    + setContact(contact)
+    + setUserType(userType)
+    + getId()
+    + getName()
+    + getAddress()
+    + getContact()
+    + getUserType()
+  }
+
+  class Patient {
+    - token: String
+    - age: String
+    - gender: Gender
+    - medicalRecord: String
+    + Patient(id, name, address, contact, userType)
+    + getToken()
+    + setToken(token)
+    + getAge()
+    + setAge(age)
+    + getGender()
+    + setGender(gender)
+    + getMedicalRecord()
+    + setMedicalRecord(medicalRecord)
+  }
+
+  class Doctor {
+    - token: String
+    - age: String
+    - gender: Gender
+    - hospital: String
+    - department: String
+    - title: String
+    - specialty: String
+    + Doctor(id, name, address, contact, userType)
+    + getToken()
+    + setToken(token)
+    + getAge()
+    + setAge(age)
+    + getGender()
+    + setGender(gender)
+    + getHospital()
+    + setHospital(hospital)
+    + getDepartment()
+    + setDepartment(department)
+    + getTitle()
+    + setTitle(title)
+    + getSpecialty()
+    + setSpecialty(specialty)
+  }
+
+  class Admin {
+    - token: String
+    + Admin(id, name, address, contact, userType)
+    + getToken()
+    + setToken(token)
+  }
+
+  enum UserType {
+    PATIENT
+    DOCTOR
+    ADMIN
+  }
+
+  enum Gender {
+    MALE
+    FEMALE
+  }
+
+  User <|-- Patient
+  User <|-- Doctor
+  User <|-- Admin
+}
+
+package com.bupt.hospitalregistrationsystem.Service {
+  class UserService {
+    + registerUser(user)
+    + updateUser(user)
+    + deleteUser(userId)
+    + getUserById(userId)
+    + getAllUsers()
+  }
+
+  class AppointmentService {
+    + makeAppointment(appointment)
+    + updateAppointment(appointment)
+    + deleteAppointment(appointmentId)
+    + getAppointmentById(appointmentId)
+    + getAppointmentsByPatient(patientId)
+    + getAppointmentsByDoctor(doctorId)
+  }
+}
+
+package com.bupt.hospitalregistrationsystem.Repository {
+  interface UserRepository {
+    + save(user)
+    + update(user)
+    + delete(userId)
+    + findById(userId)
+    + findAll()
+  }
+
+  interface AppointmentRepository {
+    + save(appointment)
+    + update(appointment)
+    + delete(appointmentId)
+    + findById(appointmentId)
+    + findByPatientId(patientId)
+    + findByDoctorId(doctorId)
+  }
+}
+
+UserService ..> UserRepository
+AppointmentService ..> AppointmentRepository
+AppointmentService ..> UserRepository
+
+@enduml

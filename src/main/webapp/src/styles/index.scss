@@ -1,0 +1,23 @@
+@import 'themes/light';
+@import 'themes/dark';
+@import 'themes/white';
+@import "themes/basic/font";
+*{
+  padding: 0px;
+  margin: 0px;
+  max-width: 100vw;
+  transition: all .5s ease;
+  font-family: 'xingShu', 'AF', 'sim sun';
+}
+:root, #app, body, html {
+  padding: 0px;
+  margin: 0px;
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vw;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+#app{
+  overflow: scroll;
+}

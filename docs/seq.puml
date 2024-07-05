@@ -1,0 +1,57 @@
+@startuml seq
+actor Patient
+actor Doctor
+actor Admin
+participant FrontEnd
+participant BackEnd
+participant Database
+
+Patient -> FrontEnd: 登录
+FrontEnd -> BackEnd: 验证用户信息请求
+BackEnd -> Database: 查询用户信息
+Database --> BackEnd: 返回用户信息
+BackEnd --> FrontEnd: 返回验证结果
+FrontEnd --> Patient: 显示界面
+
+Patient -> FrontEnd: 预约挂号
+FrontEnd -> BackEnd: 发送预约请求
+BackEnd -> Database: 查询医生出诊信息
+Database --> BackEnd: 返回出诊信息
+BackEnd --> FrontEnd: 返回可预约时间
+FrontEnd --> Patient: 显示可预约时间
+Patient -> FrontEnd: 选择预约时间
+FrontEnd -> BackEnd: 发送预约信息
+BackEnd -> Database: 保存预约信息
+Database --> BackEnd: 保存成功
+BackEnd --> FrontEnd: 返回预约结果
+FrontEnd --> Patient: 显示预约结果
+
+Doctor -> FrontEnd: 登录
+FrontEnd -> BackEnd: 验证用户信息请求
+BackEnd -> Database: 查询用户信息
+Database --> BackEnd: 返回用户信息
+BackEnd --> FrontEnd: 返回验证结果
+FrontEnd --> Doctor: 显示界面
+
+Doctor -> FrontEnd: 查看预约信息
+FrontEnd -> BackEnd: 请求预约信息
+BackEnd -> Database: 查询预约信息
+Database --> BackEnd: 返回预约信息
+BackEnd --> FrontEnd: 返回预约信息
+FrontEnd --> Doctor: 显示预约信息
+
+Admin -> FrontEnd: 登录
+FrontEnd -> BackEnd: 验证用户信息请求
+BackEnd -> Database: 查询用户信息
+Database --> BackEnd: 返回用户信息
+BackEnd --> FrontEnd: 返回验证结果
+FrontEnd --> Admin: 显示界面
+
+Admin -> FrontEnd: 审核医生注册
+FrontEnd -> BackEnd: 发送审核请求
+BackEnd -> Database: 保存审核结果
+Database --> BackEnd: 保存成功
+BackEnd --> FrontEnd: 返回审核结果
+FrontEnd --> Admin: 显示审核结果
+
+@enduml

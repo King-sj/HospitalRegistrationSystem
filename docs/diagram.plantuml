@@ -1,0 +1,47 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+entity Account << record >>
+class Admin
+class AdminApiController
+class ApiController
+entity ApiNormResult << record >>
+entity ApiResult << record >>
+class AttendanceInformation
+interface AttendanceInformationRepository << interface >>
+class CurrentTime
+class Doctor
+class DoctorApiController
+entity Email << record >>
+class EmailService
+enum Gender << enumeration >>
+class HospitalRegistrationSystemApplication
+class InstallNormalService
+class LoginApiController
+class MedicalRecordItem
+class MongoAttendanceInformationService
+class MongoUserInfoChangeService
+class MongoUserService
+class Patient
+class PatientApiController
+class RedisConfig
+class RedisManger
+class User
+class UserInfoChange
+interface UserInfoChangeRepository << interface >>
+interface UserRepository << interface >>
+enum UserType << enumeration >>
+class WebConfig
+class WebFluxConfig
+
+Admin                                  -[#000082,plain]-^  User                                  
+AdminApiController                     -[#000082,plain]-^  InstallNormalService                  
+ApiController                          -[#000082,plain]-^  InstallNormalService                  
+Doctor                                 -[#000082,plain]-^  User                                  
+DoctorApiController                    -[#000082,plain]-^  InstallNormalService                  
+Patient                                -[#000082,plain]-^  User                                  
+PatientApiController                   -[#000082,plain]-^  InstallNormalService                  
+@enduml
