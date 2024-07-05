@@ -1,7 +1,17 @@
 # 专家挂号系统 version 0.0.0 初步设计(draft)
 
 [toc]
-
+## 运行方法
+### 基础环境
+  + IDEA java-17
+  + Node.js, npm
+  + redis
+  + MongoDB
+## 步骤
+  + 打开redis,和MongoDB数据库（无密码）
+  + 打开IDEA启动src\main\java\com\bupt\hospitalregistrationsystem\HospitalRegistrationSystemApplication.java ,运行服务器
+  + 进入src\main\webapp， 执行```npm i```,```npm run dev```
+  + 使用浏览器打开localhost:5173（或其他）， 进入登录页面， 登录成功后进入系统主页
 ## 总体架构
 
 - front-end layer: webapp，负责与用户（患者、专家、数据管理员）交互，展示数据， 暂时使用 vue 实现
